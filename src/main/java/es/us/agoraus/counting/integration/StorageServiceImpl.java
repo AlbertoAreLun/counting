@@ -1,13 +1,19 @@
-package es.us.agoraus.counting.integration;
+/*package es.us.agoraus.counting.integration;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
-import es.us.agoraus.counting.dto.EncryptedVotes;
+//import es.us.agoraus.counting.dto.EncryptedVotes;
 import retrofit.Call;
 
 @Component
 public class StorageServiceImpl extends BaseIntegrationService<StorageService> {
+
+	@Override
+	protected String getBaseUrl() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 
 	// With the following statement we obtain the base URL from a property
 	// file. In this case, counting.properties.
@@ -24,4 +30,4 @@ public class StorageServiceImpl extends BaseIntegrationService<StorageService> {
 		return storageBaseUrl;
 	}
 
-}
+}*/

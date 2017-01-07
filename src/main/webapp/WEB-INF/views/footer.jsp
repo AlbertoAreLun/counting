@@ -20,6 +20,7 @@
 					<li>Guillermo Alcalá Gamero</li>
 					<li>Alberto Arenillas Luna</li>
 					<li>Jorge David Cabrera Cruz</li>
+					<li>José Giraldo Ruiz</li>
         		</ul>
 			</div>
 		</div>

@@ -1,40 +1,565 @@
 package es.us.agoraus.counting.unit;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.junit.Assert;
 import org.junit.Test;
 
-import es.us.agoraus.counting.algorithms.Transformations;
-import es.us.agoraus.counting.security.Token;
+import es.us.agoraus.counting.algorithms.CountingFactory;
 
 public class CountingTest {
-/*	
+
+	
+
+	/*
+	 * It checks that a basicCount from an example poll is done correctly by
+	 * reading the toString format of the result object
+	 */
 	@Test
-	public void testCalculateToken() {
-		Integer token;
-		
-		token = Token.calculateToken(1);
-		
-		Assert.assertTrue(token == 16704404);
+	public void testBasicCount() {
+		// Declaration
+		Map<String, Object> poll = new HashMap<String, Object>();
+		List<String> votes = new ArrayList<String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// Data charge
+		String pollId = "12345ABC";
+
+		votes.add("id=1;edad=16;genero=M;comunidad=And");
+		votes.add("id=2;edad=17;genero=F;comunidad=ComMad");
+		votes.add("id=1;edad=22;genero=M;comunidad=And");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=1;edad=22;genero=M;comunidad=RegMur");
+
+		poll.put(pollId, votes);
+
+		// Testing
+		result = CountingFactory.basicCount(poll);
+
+		// Checking
+		Assert.assertTrue(result.toString().equals("{12345ABC=[id=1;count=3, id=2;count=1, id=3;count=1]}"));
+	}
+
+	/*
+	 * It checks that a ageMayorityCount from an example poll is done correctly
+	 * by reading the toString format of the result object
+	 */
+	@Test
+	public void testAgeMayorityCount() {
+		// Declaration
+		Map<String, Object> poll = new HashMap<String, Object>();
+		List<String> votes = new ArrayList<String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// Data charge
+		String pollId = "12345ABC";
+
+		votes.add("id=1;edad=16;genero=M;comunidad=And");
+		votes.add("id=2;edad=17;genero=F;comunidad=ComMad");
+		votes.add("id=1;edad=22;genero=M;comunidad=And");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=1;edad=22;genero=M;comunidad=RegMur");
+
+		poll.put(pollId, votes);
+
+		// Testing
+		result = CountingFactory.ageMayorityCount(poll);
+
+		// Checking
+		Assert.assertTrue(result.toString().equals(
+				"{12345ABC=[id=1;countMinors=1;countAdults=2, id=2;countMinors=1;countAdults=0, id=3;countMinors=0;countAdults=1]}"));
+	}
+
+	/*
+	 * It checks that a ageRangeCount from an example poll is done correctly by
+	 * reading the toString format of the result object
+	 */
+	@Test
+	public void testAgeRangeCount() {
+		// Declaration
+		Map<String, Object> poll = new HashMap<String, Object>();
+		List<String> votes = new ArrayList<String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// Data charge
+		String pollId = "12345ABC";
+
+		votes.add("id=1;edad=16;genero=M;comunidad=And");
+		votes.add("id=2;edad=17;genero=F;comunidad=ComMad");
+		votes.add("id=1;edad=22;genero=M;comunidad=And");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=1;edad=22;genero=M;comunidad=RegMur");
+
+		poll.put(pollId, votes);
+
+		// Testing
+		result = CountingFactory.ageRangeCount(poll, 20, 23);
+
+		// Checking
+		Assert.assertTrue(result.toString().equals(
+				"{12345ABC=[id=1;countRange=2;countExcluded=1, id=2;countRange=0;countExcluded=1, id=3;countRange=1;countExcluded=0]}"));
+	}
+
+	/*
+	 * It checks that a genderCount from an example poll is done correctly by
+	 * reading the toString format of the result object
+	 */
+	@Test
+	public void testGenderCount() {
+		// Declaration
+		Map<String, Object> poll = new HashMap<String, Object>();
+		List<String> votes = new ArrayList<String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// Data charge
+		String pollId = "12345ABC";
+
+		votes.add("id=1;edad=16;genero=M;comunidad=And");
+		votes.add("id=2;edad=17;genero=F;comunidad=ComMad");
+		votes.add("id=1;edad=22;genero=M;comunidad=And");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=1;edad=22;genero=M;comunidad=RegMur");
+
+		poll.put(pollId, votes);
+
+		// Testing
+		result = CountingFactory.genderCount(poll);
+
+		// Checking
+		Assert.assertTrue(result.toString().equals(
+				"{12345ABC=[id=1;countFemale=0;countMale=3, id=2;countFemale=1;countMale=0, id=3;countFemale=1;countMale=0]}"));
+	}
+
+	/*
+	 * It checks that a communityCount from an example poll is done correctly by
+	 * reading the toString format of the result object
+	 */
+	@Test
+	public void testCommunityCount() {
+		// Declaration
+		Map<String, Object> poll = new HashMap<String, Object>();
+		List<String> votes = new ArrayList<String>();
+		Map<String, Object> result = new HashMap<String, Object>();
+
+		// Data charge
+		String pollId = "12345ABC";
+
+		votes.add("id=1;edad=16;genero=M;comunidad=And");
+		votes.add("id=2;edad=17;genero=F;comunidad=ComMad");
+		votes.add("id=1;edad=22;genero=M;comunidad=And");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=1;edad=22;genero=M;comunidad=RegMur");
+
+		poll.put(pollId, votes);
+
+		// Testing
+		result = CountingFactory.communityCount(poll);
+
+		// Checking
+		Assert.assertTrue(result.toString().equals(
+				"{12345ABC=[id=1;countAnd=2;countCat=0;countComMad=0;countComVal=0;countGal=0;countCasLeo=0;countPaiVas=0;countCan=0;countCasMan=0;countRegMur=1;countAra=0;countIslBal=0;countExt=0;countAst=0;countNav=0;countRio=0;countCeu=0;countMel=0, id=2;countAnd=0;countCat=0;countComMad=1;countComVal=0;countGal=0;countCasLeo=0;countPaiVas=0;countCan=0;countCasMan=0;countRegMur=0;countAra=0;countIslBal=0;countExt=0;countAst=0;countNav=0;countRio=0;countCeu=0;countMel=0, id=3;countAnd=0;countCat=1;countComMad=0;countComVal=0;countGal=0;countCasLeo=0;countPaiVas=0;countCan=0;countCasMan=0;countRegMur=0;countAra=0;countIslBal=0;countExt=0;countAst=0;countNav=0;countRio=0;countCeu=0;countMel=0]}"));
+	}
+
+	@Test
+	public void testCocienteDroop() {
+
+		Map<String, Object> poll = new HashMap<String, Object>();
+		String pollId = "12345ABC";
+		List<String> votes = new ArrayList<String>();
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=86;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=87;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+
+		votes.add("5");
+		poll.put(pollId, votes);
+		System.out.println("Cociente Droop: "+ CountingFactory.cocienteDroopCount(poll));
 	}
 	
 	@Test
-	public void testTransformByteArrayString() {
-		String stringToTransform = "[99, 57, 102, 51, 51, 54, 98, 55, 49, 101, 56, 99, 57, 102, 102, 55, 99, 56, 57, 101, 56, 102, 99, 56, 98, 51, 102, 56, 50, 98, 101, 51, 100, 98, 101, 97, 48, 52, 97, 97, 63, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 55, 49, 56, 55, 55, 48, 49, 48, 54, 56, 49, 49, 55, 49, 55, 50, 53, 53, 49, 54, 56, 48, 48, 50, 51, 56, 49, 51, 48, 48, 51, 52, 52, 54, 56, 49, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 54, 53, 50, 57, 49, 52, 56, 54, 53, 50, 52, 53, 51, 54, 51, 54, 56, 49, 57, 56, 50, 48, 52, 57, 49, 51, 53, 52, 50, 52, 52, 57, 56, 50, 57, 57, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 54, 56, 57, 57, 53, 51, 56, 49, 52, 51, 52, 51, 52, 54, 51, 49, 56, 57, 57, 57, 48, 48, 53, 54, 55, 53, 57, 56, 51, 56, 55, 52, 56, 53, 51, 49, 48, 56, 51, 50, 57, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 54, 55, 51, 52, 56, 48, 53, 55, 51, 51, 56, 54, 55, 48, 57, 53, 55, 54, 49, 49, 50, 51, 55, 52, 52, 52, 49, 52, 56, 52, 51, 57, 54, 51, 52, 48, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 50, 53, 55, 57, 51, 52, 53, 49, 49, 57, 48, 57, 49, 53, 56, 53, 53, 53, 54, 52, 53, 48, 52, 56, 57, 55, 49, 51, 53, 52, 49, 55, 51, 48, 52, 55, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 54, 53, 49, 50, 54, 55, 49, 51, 54, 51, 55, 54, 51, 56, 51, 56, 51, 51, 53, 53, 48, 57, 57, 55, 52, 53, 54, 55, 53, 52, 56, 49, 50, 55, 51, 56, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 50, 52, 54, 53, 55, 49, 49, 48, 56, 51, 55, 55, 53, 56, 49, 49, 49, 49, 49, 49, 48, 49, 54, 57, 53, 48, 54, 56, 50, 52, 54, 52, 56, 56, 48, 55, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 53, 57, 53, 55, 49, 55, 54, 56, 48, 51, 54, 48, 57, 50, 53, 51, 56, 54, 56, 52, 54, 56, 52, 56, 50, 50, 50, 53, 49, 51, 57, 55, 50, 56, 53, 52, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 54, 48, 48, 54, 50, 53, 57, 52, 54, 55, 49, 48, 57, 52, 50, 50, 50, 53, 51, 48, 54, 48, 52, 48, 48, 54, 48, 54, 53, 49, 54, 51, 50, 52, 57, 51, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 50, 53, 55, 49, 51, 55, 50, 57, 51, 48, 49, 56, 56, 54, 48, 52, 55, 55, 49, 57, 55, 53, 55, 54, 55, 51, 50, 55, 53, 57, 50, 48, 53, 54, 56, 52, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 53, 50, 50, 50, 53, 56, 48, 57, 53, 57, 55, 50, 55, 48, 54, 50, 52, 55, 48, 54, 51, 48, 57, 57, 54, 55, 50, 49, 50, 48, 49, 49, 55, 50, 55, 57, 56, 48, 55, 124, 49, 49, 53, 48, 57, 53, 53, 48, 53, 50, 52, 53, 48, 57, 50, 55, 54, 50, 51, 57, 49, 54, 57, 53, 49, 48, 50, 55, 54, 48, 49, 53, 48, 54, 49, 53, 50, 57, 51, 54, 55, 56, 56, 56, 57, 55, 50, 55, 54, 51, 49, 48, 52, 49, 56, 53, 48, 48, 55, 53, 49, 53, 51, 48, 57, 55, 51, 51, 54, 56, 51, 49, 49, 55, 52, 52, 53]";
-		List<String> stringsToTransform = new ArrayList<>();
-		stringsToTransform.add(stringToTransform);
-		List<byte[]> transformed = Transformations.transformByteArrayStringToByteArray(stringsToTransform);
-		Assert.assertTrue(transformed.get(0) != null);
+	public void testMetodoSainteLague() {
+		Map<String, Object> poll = new HashMap<String, Object>();
+		String pollId = "12345ABC";
+		List<String> votes = new ArrayList<String>();
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=86;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=87;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+
+		votes.add("5");
+		poll.put(pollId, votes);
+		System.out.println("Método sainteLague: "+ CountingFactory.metodoSainteLague(poll));
+	}
+	@Test
+	public void testMetodoDHont() {
+		Map<String, Object> poll = new HashMap<String, Object>();
+		String pollId = "12345ABC";
+		List<String> votes = new ArrayList<String>();
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=86;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=66;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=76;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=26;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=36;genero=M;comunidad=And");
+		votes.add("id=1;edad=46;genero=M;comunidad=And");
+		votes.add("id=1;edad=56;genero=M;comunidad=And");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=77;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=87;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=57;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=67;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=47;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=37;genero=F;comunidad=ComMad");
+		votes.add("id=2;edad=27;genero=F;comunidad=ComMad");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=3;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+		votes.add("id=4;edad=20;genero=F;comunidad=Cat");
+
+		votes.add("5");
+		poll.put(pollId, votes);
+		System.out.println("Método d'Hont : "+ CountingFactory.dhontCount(poll));
 	}
 	
-	@Test
-	public void testTransformStringToByteArray() {
-		String stringToTransform = "c9f336b71e8c9ff7c89e8fc8b3f82be3dbea04aa?11509550524509276239169510276015061529522718770106811717255168002381300344681|11509550524509276239169510276015061529522652914865245363681982049135424498299|11509550524509276239169510276015061568995381434346318999005675983874853108329|11509550524509276239169510276015061529522673480573386709576112374441484396340|11509550524509276239169510276015061529522257934511909158555645048971354173047|11509550524509276239169510276015061529522651267136376383833550997456754812738|11509550524509276239169510276015061529522246571108377581111110169506824648807|11509550524509276239169510276015061529522595717680360925386846848222513972854|11509550524509276239169510276015061529522600625946710942225306040060651632493|11509550524509276239169510276015061529522257137293018860477197576732759205684|11509550524509276239169510276015061529522258095972706247063099672120117279807|11509550524509276239169510276015061529367888972763104185007515309733683117445";
-		List<String> stringsToTransform = new ArrayList<>();
-		stringsToTransform.add(stringToTransform);
-		List<byte[]> transformed = Transformations.transformStringToByteArray(stringsToTransform);
-		Assert.assertTrue(transformed.get(0) != null);
-	}*/
 }
