@@ -21,7 +21,7 @@
 				ni de ningún miembro relacionado con el subsistema.<br> Se
 				trata de un problema sobre el lugar donde está desplegado el
 				subsistema de Verificación, el cual debe ser consultado para el
-				descifrado. <br> Aún así, disculpen las molestias causadas.Cambio
+				descifrado. <br> Aún así, disculpen las molestias causadas.another stupid change
 			</p>
 		</div>
 		<br>
