@@ -18,9 +18,3 @@ La modificación del año anterior 2015/2016 añadió soporte para distintos tip
 ### Más información
 
 https://1984.lsi.us.es/wiki-egc/index.php/Recuento
-
-
-PRUEBAAAAAAAAAA
-
-
-
