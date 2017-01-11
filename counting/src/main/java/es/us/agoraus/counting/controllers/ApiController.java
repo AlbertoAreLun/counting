@@ -156,24 +156,7 @@ public class ApiController{
 		return result;
 		
 	}
-	
-	@RequestMapping("/gender/{pollId}")
-	public GenderCount votesGender(@PathVariable int pollId) {
-		GenderCount result;
-		
-		result = new GenderCount();
-		
-		try {
-			result = CountingFactory.genderCount(pollId);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		
-		return result;
-		
-	}	/**
-	 * It makes a count of a poll returning the number of votes for each poll answer grouped by minors and adults users (Ignoring gender and community)
-	 */
+
 	@RequestMapping("/ageMayority/{pollId}")
 	public AgeMayorityCount votesAgeMayority(@PathVariable int pollId) {
 		AgeMayorityCount result;
