@@ -157,82 +157,82 @@ public class CountingFactory {
 
 		return count;
 	}
-
+	
 	public static GenderCount genderCount(int pollId) {
-        GenderCount count;
-        JSONObject storageEncryptedAnswer;
-        JSONObject storageDecryptedAnswer;
-        List<StoredVote> storageVotes;
-        List<GenderVote> countedVotes;
-        List<Integer> countedVotesIds;
+		GenderCount count;
+		JSONObject storageEncryptedAnswer;
+		JSONObject storageDecryptedAnswer;
+		List<StoredVote> storageVotes;
+		List<GenderVote> countedVotes;
+		List<Integer> countedVotesIds;
+		
+		count = new GenderCount();
+		storageVotes = new ArrayList<StoredVote>();
+		countedVotes = new ArrayList<GenderVote>();
+		countedVotesIds = new ArrayList<Integer>();
+		storageEncryptedAnswer = null;
+		storageDecryptedAnswer = null;
+		
+		count.setStatus(Status.SUCCESS.getMessage());
+		count.setPollId(pollId);
+		
+		// Geting Json answer from Storage subsystem.
+		try {
+			storageEncryptedAnswer = StorageService.getVotesByPollId(pollId);
+		} catch (Exception e) {
+			e.printStackTrace();
+			count.setStatus(Status.STORAGE_CONNECTION_ERROR.getMessage());
+			return count;
+		}
+		
+		// Decrypting storaged answer by Verification subsystem
+		try {
+			storageDecryptedAnswer = VerificationService.decryptStorageAnswer(storageEncryptedAnswer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			count.setStatus(Status.VERIFICATION_CONNECTION_ERROR.getMessage());
+			return count;
+		}
+		
+		// Decoding StoredVotes from Json answer
+		try {
+			storageVotes = fromJsonToStoredVotes(storageDecryptedAnswer);
+		} catch (Exception e) {
+			e.printStackTrace();
+			count.setStatus(Status.INVALID_JSON_FORMAT.getMessage());
+			return count;
+		}
+		
+		// Counting votes
+		for (StoredVote storedVote : storageVotes) {
+			if (countedVotesIds.contains(storedVote.getId())){
+				for (GenderVote vote : countedVotes) {
+					if (vote.getId() == storedVote.getId()) {
+						if(storedVote.getGender().equals("female")){
+						vote.increaseFemaleCount(1);
+						break;
+						}
+						else{
+							vote.increaseMaleCount(1);
+						}
+					}
+				}
+			} else {
+				if(storedVote.getGender().equals("female")){
+				countedVotes.add(new GenderVote(storedVote.getId(), 1,0));
+				} else{
+					countedVotes.add(new GenderVote(storedVote.getId(), 0,1));
+				}
+				countedVotesIds.add(storedVote.getId());
+			}
+		}
+		
+		count.setVotes(countedVotes);
 
-        count = new GenderCount();
-        storageVotes = new ArrayList<StoredVote>();
-        countedVotes = new ArrayList<GenderVote>();
-        countedVotesIds = new ArrayList<Integer>();
-        storageEncryptedAnswer = null;
-        storageDecryptedAnswer = null;
-        
-        count.setStatus(Status.SUCCESS.getMessage());
-        count.setPollId(pollId);
-        
-        // Geting Json answer from Storage subsystem.
-        try {
-            storageEncryptedAnswer = StorageService.getVotesByPollId(pollId);
-        } catch (Exception e) {
-            e.printStackTrace();
-            count.setStatus(Status.STORAGE_CONNECTION_ERROR.getMessage());
-            return count;
-        }
-        
-        // Decrypting storaged answer by Verification subsystem
-        try {
-            storageDecryptedAnswer = VerificationService.decryptStorageAnswer(storageEncryptedAnswer);
-        } catch (Exception e) {
-            e.printStackTrace();
-            count.setStatus(Status.VERIFICATION_CONNECTION_ERROR.getMessage());
-            return count;
-        }
-        
-        // Decoding StoredVotes from Json answer
-        try {
-            storageVotes = fromJsonToStoredVotes(storageDecryptedAnswer);
-        } catch (Exception e) {
-            e.printStackTrace();
-            count.setStatus(Status.INVALID_JSON_FORMAT.getMessage());
-            return count;
-        }
-        
-        // Counting votes
-        for (StoredVote storedVote : storageVotes) {
-            if (countedVotesIds.contains(storedVote.getId())){
-                for (GenderVote vote : countedVotes) {
-                    if (vote.getId() == storedVote.getId()) {
-                        if(storedVote.getGender().equals("female")){ 
-                            vote.increaseFemaleCount(1);
-                            break;
-                        }else{
-                            vote.increaseMaleCount(1);
-                            break;
-                        }
-                    }
-                }
-            } else {
-                if(storedVote.getGender().equals("female")){ 
-                    countedVotes.add(new GenderVote(storedVote.getId(),1,0));
-                    countedVotesIds.add(storedVote.getId());
-                }else{
-                    countedVotes.add(new GenderVote(storedVote.getId(),0,1));
-                    countedVotesIds.add(storedVote.getId());
-                }
-            }
-        }
-        
-        count.setVotes(countedVotes);
-
-        return count;
-    }
-
+		return count;
+		
+	}
+	
 	/**
 	 * It makes a count grouped by minors and adults (Minors: <18 years old,
 	 * Adults: >=18 years old)
@@ -319,7 +319,7 @@ public class CountingFactory {
 			}
 		}
 		
-		count.setMayorityVotes(countedVotes);
+		count.setVotes(countedVotes);
 
 		return count;
 		

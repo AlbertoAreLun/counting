@@ -31,15 +31,15 @@ public class AgeMayorityCount {
 	}
 	
 	
-	public List<AgeMayorityVote> getAgeMayorityVotes() {
+	public List<AgeMayorityVote> getVotes() {
 		return votes;
 	}
 	
-	public void setMayorityVotes(List<AgeMayorityVote> votes) {
+	public void setVotes(List<AgeMayorityVote> votes) {
 		this.votes = votes;
 	}
 	
-	public void addMayorityVote(AgeMayorityVote vote) {
+	public void addVote(AgeMayorityVote vote) {
 		this.votes.add(vote);
 	}
 

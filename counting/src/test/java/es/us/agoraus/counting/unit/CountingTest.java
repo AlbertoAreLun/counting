@@ -69,10 +69,10 @@ public class CountingTest {
 		// Checking
 		Assert.assertTrue(result.getStatus().equals("OK."));
 		Assert.assertTrue(result.getPollId() == 1);
-		Assert.assertTrue(result.getAgeMayorityVotes().size() == 2);
+		Assert.assertTrue(result.getVotes().size() == 2);
 		boolean foundVote1 = false;
 		boolean foundVote2 = false;
-		for (AgeMayorityVote ageMayorityVote : result.getAgeMayorityVotes()){
+		for (AgeMayorityVote ageMayorityVote : result.getVotes()){
 			if (ageMayorityVote.getId() == 31 && ageMayorityVote.getMayorityCount() == 1 && ageMayorityVote.getMinorsCount()==1) {
 				foundVote1 = true;
 			}

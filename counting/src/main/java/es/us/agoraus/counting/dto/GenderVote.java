@@ -24,6 +24,7 @@ public class GenderVote extends Vote {
 	public int getMaleCount() {
 		return maleCount;
 	}
+	
 	public void setMaleCount(int maleCount) {
 		this.maleCount = maleCount;
 	}
