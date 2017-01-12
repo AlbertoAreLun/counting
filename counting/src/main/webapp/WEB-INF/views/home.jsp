@@ -41,7 +41,7 @@
 					<td>{"status":"OK.","pollId":3,"ageMayorityVotes":[{"id":31,"minorsCount":1,"mayorityCount":1},{"id":32,"minorsCount":0,"mayorityCount":1}]}</td>
 				</tr>
 				<tr>
-					<td>*/count/usualAgeRange/{pollId}</td>
+					<td>*/count/usualAgeRanges/{pollId}</td>
 					<td>Recuento por rangos habituales de edad.</td>
 					<td>{pollId}: id de la votación a la que hacer recuento</td>
 					<td>JSON con el resultado del recuento de esa votación.</td>

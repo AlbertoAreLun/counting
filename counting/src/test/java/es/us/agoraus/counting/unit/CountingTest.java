@@ -83,34 +83,34 @@ public class CountingTest {
 		Assert.assertTrue(foundVote1 && foundVote2);
 	}
 
-//	@Test
-//    public void testGenderCount() {
-//        // Declaration
-//        int pollId;
-//        GenderCount result = new GenderCount();
-//
-//        // Data charge
-//        pollId = 1;
-//
-//        // Testing
-//        result = CountingFactory.genderCount(pollId);
-//
-//        // Checking
-//        Assert.assertTrue(result.getStatus().equals("OK."));
-//        Assert.assertTrue(result.getPollId() == 1);
-//        Assert.assertTrue(result.getVotes().size() == 2);
-//        boolean foundVote1 = false;
-//        boolean foundVote2 = false;
-//        for (GenderVote genderVote : result.getVotes()){
-//            if (genderVote.getId() == 31 && genderVote.getFemaleCount() == 1 && genderVote.getMaleCount() == 1) {
-//                foundVote1 = true;
-//            }
-//            if (genderVote.getId() == 32 && genderVote.getFemaleCount() == 1) {
-//                foundVote2 = true;
-//            }
-//        }
-//        Assert.assertTrue(foundVote1 && foundVote2);
-//    }
+	@Test
+    public void testGenderCount() {
+        // Declaration
+        int pollId;
+        GenderCount result = new GenderCount();
+
+        // Data charge
+        pollId = 1;
+
+        // Testing
+        result = CountingFactory.genderCount(pollId);
+
+        // Checking
+        Assert.assertTrue(result.getStatus().equals("OK."));
+        Assert.assertTrue(result.getPollId() == 1);
+        Assert.assertTrue(result.getVotes().size() == 2);
+        boolean foundVote1 = false;
+        boolean foundVote2 = false;
+        for (GenderVote genderVote : result.getVotes()){
+            if (genderVote.getId() == 31 && genderVote.getFemaleCount() == 1 && genderVote.getMaleCount() == 1) {
+                foundVote1 = true;
+            }
+            if (genderVote.getId() == 32 && genderVote.getMaleCount() == 1) {
+                foundVote2 = true;
+            }
+        }
+        Assert.assertTrue(foundVote1 && foundVote2);
+    }
 	
 
 	/*
@@ -617,10 +617,10 @@ public class CountingTest {
 		// Checking
 		Assert.assertTrue(result.getStatus().equals("OK."));
 		Assert.assertTrue(result.getPollId() == 1);
-		Assert.assertTrue(result.getUsualAgeRangesVotes().size() == 2);
+		Assert.assertTrue(result.getVotes().size() == 2);
 		boolean foundVote1 = false;
 		boolean foundVote2 = false;
-		for (UsualAgeRangesVote usualAgeRangesVote : result.getUsualAgeRangesVotes()){
+		for (UsualAgeRangesVote usualAgeRangesVote : result.getVotes()){
 			if (usualAgeRangesVote.getId() == 31 && usualAgeRangesVote.getCountUnder30() == 1 && usualAgeRangesVote.getCount30To60() == 1 && usualAgeRangesVote.getCountOver60() == 0) {
 				foundVote1 = true;
 			}

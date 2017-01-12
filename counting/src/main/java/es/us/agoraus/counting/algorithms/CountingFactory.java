@@ -986,7 +986,7 @@ public class CountingFactory {
 			}
 		}
 		
-		count.setUsualAgeRangesVotes(countedVotes);
+		count.setVotes(countedVotes);
 
 		return count;
 		

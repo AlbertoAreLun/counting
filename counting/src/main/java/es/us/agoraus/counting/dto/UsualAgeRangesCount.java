@@ -31,15 +31,15 @@ public class UsualAgeRangesCount {
 	}
 	
 	
-	public List<UsualAgeRangesVote> getUsualAgeRangesVotes() {
+	public List<UsualAgeRangesVote> getVotes() {
 		return votes;
 	}
 	
-	public void setUsualAgeRangesVotes(List<UsualAgeRangesVote> votes) {
+	public void setVotes(List<UsualAgeRangesVote> votes) {
 		this.votes = votes;
 	}
 	
-	public void addMUsualAgeRangesVote(UsualAgeRangesVote vote) {
+	public void addVote(UsualAgeRangesVote vote) {
 		this.votes.add(vote);
 	}
 
