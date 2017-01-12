@@ -38,14 +38,14 @@
 					<td>Recuento por mayoría de edad.</td>
 					<td>{pollId}: id de la votación a la que hacer recuento</td>
 					<td>JSON con el resultado del recuento de esa votación.</td>
-					<td>{"status":"OK.","pollId":3,"ageMayorityVotes":[{"id":31,"minorsCount":1,"mayorityCount":1},{"id":32,"minorsCount":0,"mayorityCount":1}]}</td>
+					<td>{"status":"OK.","pollId":3,"votes":[{"id":31,"minorsCount":1,"mayorityCount":1},{"id":32,"minorsCount":0,"mayorityCount":1}]}</td>
 				</tr>
 				<tr>
 					<td>*/count/usualAgeRanges/{pollId}</td>
 					<td>Recuento por rangos habituales de edad.</td>
 					<td>{pollId}: id de la votación a la que hacer recuento</td>
 					<td>JSON con el resultado del recuento de esa votación.</td>
-					<td>{"status":"OK.","pollId":3,"usualAgeRangesVotes":[{"id":31,"countUnder30":1,"count30To60":1,"countOver60":0},{"id":32,"countUnder30":0,"count30To60":1,"countOver60":0}]}</td>
+					<td>{"status":"OK.","pollId":3,"votes":[{"id":31,"countUnder30":1,"count30To60":1,"countOver60":0},{"id":32,"countUnder30":0,"count30To60":1,"countOver60":0}]}</td>
 				</tr>
 				<tr>
 					<td>*/count/ageRange/{pollId}/{minRange}/{maxRange}</td>
