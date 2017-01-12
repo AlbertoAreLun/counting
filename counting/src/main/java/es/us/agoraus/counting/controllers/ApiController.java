@@ -1,4 +1,4 @@
-﻿package es.us.agoraus.counting.controllers;
+package es.us.agoraus.counting.controllers;
 
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;

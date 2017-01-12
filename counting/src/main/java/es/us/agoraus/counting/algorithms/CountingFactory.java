@@ -1,4 +1,4 @@
-﻿package es.us.agoraus.counting.algorithms;
+package es.us.agoraus.counting.algorithms;
 
 import java.util.ArrayList;
 import java.util.Iterator;

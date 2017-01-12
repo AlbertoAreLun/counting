@@ -1,4 +1,4 @@
-﻿package es.us.agoraus.counting.unit;
+package es.us.agoraus.counting.unit;
 
 import org.junit.Assert;
 import org.junit.Test;
